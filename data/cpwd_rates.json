@@ -1,0 +1,78 @@
+{
+  "materials": [
+    {
+      "id": "cement_bag",
+      "name": "Ordinary Portland Cement (50 kg bag)",
+      "unit": "bag",
+      "base_rate": 360.0,
+      "description": "CPWD SOR 2024 Item 02.01"
+    },
+    {
+      "id": "steel_fe500",
+      "name": "Reinforcement Steel Fe500",
+      "unit": "kg",
+      "base_rate": 68.5,
+      "description": "CPWD SOR 2024 Item 05.03"
+    },
+    {
+      "id": "river_sand",
+      "name": "River Sand (Zone-II)",
+      "unit": "cum",
+      "base_rate": 1450.0,
+      "description": "CPWD SOR 2024 Item 01.09"
+    },
+    {
+      "id": "aggregate_20mm",
+      "name": "Coarse Aggregates 20mm",
+      "unit": "cum",
+      "base_rate": 1650.0,
+      "description": "CPWD SOR 2024 Item 01.11"
+    }
+  ],
+  "labour": [
+    {
+      "id": "mason",
+      "name": "Mason (Skilled)",
+      "unit": "day",
+      "base_rate": 950.0,
+      "description": "CPWD SOR 2024 Labour Schedule"
+    },
+    {
+      "id": "helper",
+      "name": "Helper (Unskilled)",
+      "unit": "day",
+      "base_rate": 650.0,
+      "description": "CPWD SOR 2024 Labour Schedule"
+    },
+    {
+      "id": "carpenter",
+      "name": "Carpenter",
+      "unit": "day",
+      "base_rate": 1025.0,
+      "description": "CPWD SOR 2024 Labour Schedule"
+    }
+  ],
+  "equipment": [
+    {
+      "id": "concrete_mixer",
+      "name": "Concrete Mixer 0.2/0.14 cum",
+      "unit": "day",
+      "base_rate": 1850.0,
+      "description": "CPWD SOR 2024 Plant & Machinery"
+    },
+    {
+      "id": "vibrator",
+      "name": "Needle Vibrator",
+      "unit": "day",
+      "base_rate": 1120.0,
+      "description": "CPWD SOR 2024 Plant & Machinery"
+    },
+    {
+      "id": "tower_crane",
+      "name": "Tower Crane",
+      "unit": "day",
+      "base_rate": 15600.0,
+      "description": "CPWD SOR 2024 Plant & Machinery"
+    }
+  ]
+}

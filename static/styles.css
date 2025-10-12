@@ -1,0 +1,19 @@
+body {
+  background-color: #f7f8fc;
+}
+
+.card-header {
+  letter-spacing: 0.02em;
+}
+
+table thead th {
+  white-space: nowrap;
+}
+
+table tbody td {
+  vertical-align: top;
+}
+
+textarea {
+  resize: vertical;
+}
