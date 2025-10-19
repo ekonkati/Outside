@@ -23,7 +23,19 @@ pip install -r requirements.txt
 
 > **Note:** If your environment is behind a corporate proxy, configure the proxy variables (e.g., `HTTPS_PROXY`) before running `pip install`.
 
-## 3. Launch the development server
+## 3. Verify the installation
+
+Run the automated smoke tests to confirm the Flask routes can be loaded and
+that items can be added to the in-memory session store:
+
+```bash
+pytest
+```
+
+A passing result indicates that the bundled dataset can be read and the core
+add/reset workflow is functional.
+
+## 4. Launch the development server
 
 You can run the application directly with Python:
 
@@ -40,11 +52,11 @@ flask run --host=0.0.0.0 --port=5000
 
 After the server starts, open your browser to [http://localhost:5000](http://localhost:5000) to use the cost sheet.
 
-## 4. Resetting data during development
+## 5. Resetting data during development
 
 Line items are stored in the Flask session.  If you need to clear all entries, click **"Clear all items"** in the sidebar or clear your browser cookies for the site.
 
-## 5. Updating the CPWD schedule
+## 6. Updating the CPWD schedule
 
 The sample dataset lives in [`data/cpwd_rates.json`](data/cpwd_rates.json).  Replace or extend the file with the current schedule of rates.  Each entry must include:
 
