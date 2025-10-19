@@ -1,6 +1,9 @@
 import pytest
 
+pytest.importorskip("flask")
+
 from app import create_app
+from utils.calculations import CompositeItem
 
 
 def load_sample_payload():
@@ -49,6 +52,9 @@ def test_add_item_flow(app, client):
         stored = session["items"]
         assert len(stored) == 1
         assert stored[0]["remarks"] == "Test item"
+        assert stored[0]["metadata"]["composite_breakdown"]["unit_rate"] == pytest.approx(
+            float(stored[0]["base_rate"])
+        )
 
 
 def test_reset_clears_items(app, client):
@@ -60,3 +66,68 @@ def test_reset_clears_items(app, client):
 
     with client.session_transaction() as session:
         assert "items" not in session
+
+
+def test_composite_breakdown_math():
+    payload = {
+        "id": "sample",
+        "name": "Sample composite item",
+        "unit": "unit",
+        "components": [
+            {
+                "group": "materials",
+                "description": "Component A",
+                "unit": "qty",
+                "quantity": 1.0,
+                "rate": 40.0,
+            },
+            {
+                "group": "labour",
+                "description": "Component B",
+                "unit": "qty",
+                "quantity": 2.0,
+                "rate": 30.0,
+            },
+        ],
+        "adjustments": [
+            {
+                "label": "GST @21.27%",
+                "factor": 0.2127,
+                "base_stage": "X",
+                "result_stage": "Y",
+            },
+            {
+                "label": "Overheads @15%",
+                "percent": 15.0,
+                "base_stage": "Y",
+                "result_stage": "Z",
+            },
+            {
+                "label": "Cess @1%",
+                "percent": 1.0,
+                "base_stage": "Z",
+            },
+        ],
+        "output_quantity": 10.0,
+        "round_to": 6,
+    }
+    composite_item = CompositeItem.from_dict(payload)
+    breakdown = composite_item.breakdown()
+
+    assert breakdown["base_total"] == pytest.approx(100.0)
+    assert breakdown["stages"]["Y"] == pytest.approx(121.27, rel=1e-6)
+    assert breakdown["stages"]["Z"] == pytest.approx(139.4605, rel=1e-6)
+    assert breakdown["raw_total"] == pytest.approx(140.855105, rel=1e-6)
+    assert breakdown["unit_rate"] == pytest.approx(14.0855105, rel=1e-6)
+
+
+def test_dataset_breakdown_matches_base_rate(app):
+    rates = app.config["RATES"]
+    for items in rates.values():
+        for item in items:
+            costing = item.get("costing")
+            if costing and "computed_breakdown" in costing:
+                breakdown = costing["computed_breakdown"]
+                assert breakdown["unit_rate"] == pytest.approx(item["base_rate"], rel=1e-6)
+                return
+    pytest.fail("Expected at least one composite item with computed breakdown")

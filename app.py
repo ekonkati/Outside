@@ -2,17 +2,45 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from flask import Flask, redirect, render_template, request, session, url_for
 
-from utils.calculations import LineItem, summarise
+from utils.calculations import CompositeItem, LineItem, summarise
 
 
-def load_rates() -> Dict[str, List[Dict[str, str | float]]]:
+def load_rates() -> Dict[str, List[Dict[str, Any]]]:
     data_path = Path(__file__).parent / "data" / "cpwd_rates.json"
     with data_path.open() as fp:
-        return json.load(fp)
+        raw_data: Dict[str, List[Dict[str, Any]]] = json.load(fp)
+
+    processed: Dict[str, List[Dict[str, Any]]] = {}
+    for category, items in raw_data.items():
+        processed_items: List[Dict[str, Any]] = []
+        for item in items:
+            item_data: Dict[str, Any] = dict(item)
+            costing = item_data.get("costing")
+            if isinstance(costing, dict) and costing.get("components"):
+                payload = dict(costing)
+                payload.update(
+                    {
+                        "id": item_data.get("id", ""),
+                        "name": item_data.get("name", ""),
+                        "unit": item_data.get("unit", ""),
+                        "description": item_data.get("description", ""),
+                    }
+                )
+                composite_item = CompositeItem.from_dict(payload)
+                breakdown = composite_item.breakdown()
+                item_data["base_rate"] = float(breakdown["unit_rate"])
+                costing["computed_breakdown"] = breakdown
+            elif "base_rate" not in item_data:
+                raise KeyError(
+                    f"Item '{item_data.get('id', 'unknown')}' must define either a base_rate or a costing block"
+                )
+            processed_items.append(item_data)
+        processed[category] = processed_items
+    return processed
 
 
 def create_app() -> Flask:
@@ -52,6 +80,11 @@ def create_app() -> Flask:
         if selected_item is None:
             return redirect(url_for("index"))
 
+        metadata = {}
+        computed_breakdown = selected_item.get("costing", {}).get("computed_breakdown")
+        if computed_breakdown:
+            metadata["composite_breakdown"] = computed_breakdown
+
         line_item = LineItem(
             category=category,
             item_id=item_id,
@@ -64,6 +97,7 @@ def create_app() -> Flask:
             seignorage_percent=seignorage_percent,
             wastage_percent=wastage_percent,
             remarks=remarks,
+            metadata=metadata,
         )
 
         items = session.get("items", [])

@@ -24,7 +24,7 @@
                   <optgroup label="{{ category|capitalize }}">
                     {% for entry in entries %}
                       <option value="{{ entry.id }}" data-category="{{ category }}" data-unit="{{ entry.unit }}" data-rate="{{ entry.base_rate }}">
-                        {{ entry.name }} ({{ entry.unit }}, ₹{{ entry.base_rate }})
+                        {{ entry.name }} ({{ entry.unit }}, ₹{{ '%.2f'|format(entry.base_rate) }})
                       </option>
                     {% endfor %}
                   </optgroup>
@@ -96,6 +96,31 @@
                     <td>
                       <div class="fw-semibold">{{ item.item_name }}</div>
                       <div class="text-muted small">{{ item.remarks }}</div>
+                      {% set breakdown = item.metadata.composite_breakdown if item.metadata else none %}
+                      {% if breakdown %}
+                        <details class="small mt-1">
+                          <summary>Costing breakdown</summary>
+                          <div class="mt-1">
+                            <div>Output quantity: {{ '%.2f'|format(breakdown.output_quantity) }} {{ breakdown.unit }}</div>
+                            <div>Base total (X): ₹{{ '%.2f'|format(breakdown.base_total) }}</div>
+                            <div class="fw-semibold mt-1">Components</div>
+                            <ul class="mb-1 ps-3">
+                              {% for component in breakdown.components %}
+                                <li>{{ component.group|capitalize }} – {{ component.description }} ({{ '%.2f'|format(component.quantity) }} {{ component.unit }} × ₹{{ '%.2f'|format(component.rate) }} = ₹{{ '%.2f'|format(component.amount) }})</li>
+                              {% endfor %}
+                            </ul>
+                            {% if breakdown.adjustments %}
+                              <div class="fw-semibold mt-2">Adjustments</div>
+                              <ul class="mb-0 ps-3">
+                                {% for adjustment in breakdown.adjustments %}
+                                  <li>{{ adjustment.label }} on {{ adjustment.base_stage }}: ₹{{ '%.2f'|format(adjustment.amount) }} → {{ adjustment.result_stage or 'Total' }}</li>
+                                {% endfor %}
+                              </ul>
+                            {% endif %}
+                            <div class="mt-2">Final total: ₹{{ '%.2f'|format(breakdown.final_total) }} (₹{{ '%.2f'|format(breakdown.unit_rate) }} per {{ item.unit }})</div>
+                          </div>
+                        </details>
+                      {% endif %}
                     </td>
                     <td>{{ '%.2f'|format(item.quantity) }}</td>
                     <td>{{ item.unit }}</td>

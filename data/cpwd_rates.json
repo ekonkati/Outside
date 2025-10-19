@@ -1,78 +1,231 @@
 {
-  "materials": [
+  "earthwork": [
     {
-      "id": "cement_bag",
-      "name": "Ordinary Portland Cement (50 kg bag)",
-      "unit": "bag",
-      "base_rate": 360.0,
-      "description": "CPWD SOR 2024 Item 02.01"
+      "id": "2.1.1",
+      "name": "Earthwork in surface excavation not exceeding 30 cm in depth",
+      "unit": "100 sqm",
+      "description": "Based on CPWD SOR item 2.1.1 for surface excavation including disposal.",
+      "costing": {
+        "output_quantity": 100.0,
+        "components": [
+          {
+            "group": "labour",
+            "description": "Beldar (skilled)",
+            "unit": "day",
+            "quantity": 6.8,
+            "rate": 736.0
+          },
+          {
+            "group": "labour",
+            "description": "Coolie (unskilled)",
+            "unit": "day",
+            "quantity": 0.5,
+            "rate": 600.0
+          },
+          {
+            "group": "machinery",
+            "description": "Crawler excavator 0.9 cum bucket",
+            "unit": "hour",
+            "quantity": 1.8,
+            "rate": 1350.0
+          },
+          {
+            "group": "machinery",
+            "description": "Smooth wheel roller - 80 to 100 KN",
+            "unit": "hour",
+            "quantity": 2.0,
+            "rate": 900.0
+          },
+          {
+            "group": "machinery",
+            "description": "Water tanker 6000 litre",
+            "unit": "hour",
+            "quantity": 1.0,
+            "rate": 420.0
+          },
+          {
+            "group": "sundries",
+            "description": "Hand tools, barricading, minor T&P",
+            "unit": "lump-sum",
+            "quantity": 1.0,
+            "rate": 380.0
+          }
+        ],
+        "adjustments": [
+          {
+            "label": "GST @21.27%",
+            "factor": 0.2127,
+            "base_stage": "X",
+            "result_stage": "Y"
+          },
+          {
+            "label": "Contractor's profit & overhead @15%",
+            "percent": 15.0,
+            "base_stage": "Y",
+            "result_stage": "Z"
+          },
+          {
+            "label": "Labour cess @1%",
+            "percent": 1.0,
+            "base_stage": "Z"
+          }
+        ],
+        "round_to": 2
+      }
     },
     {
-      "id": "steel_fe500",
-      "name": "Reinforcement Steel Fe500",
-      "unit": "kg",
-      "base_rate": 68.5,
-      "description": "CPWD SOR 2024 Item 05.03"
-    },
-    {
-      "id": "river_sand",
-      "name": "River Sand (Zone-II)",
-      "unit": "cum",
-      "base_rate": 1450.0,
-      "description": "CPWD SOR 2024 Item 01.09"
-    },
-    {
-      "id": "aggregate_20mm",
-      "name": "Coarse Aggregates 20mm",
-      "unit": "cum",
-      "base_rate": 1650.0,
-      "description": "CPWD SOR 2024 Item 01.11"
+      "id": "2.2",
+      "name": "Banking earth by mechanical means in 20 cm layers",
+      "unit": "100 cum",
+      "description": "Compaction of earth embankment in layers not exceeding 20 cm, including watering and rolling as per CPWD item 2.2.",
+      "costing": {
+        "output_quantity": 100.0,
+        "components": [
+          {
+            "group": "machinery",
+            "description": "Dozer 80 HP for spreading",
+            "unit": "hour",
+            "quantity": 2.5,
+            "rate": 2400.0
+          },
+          {
+            "group": "machinery",
+            "description": "Vibrator roller 8-10 tonne",
+            "unit": "hour",
+            "quantity": 3.5,
+            "rate": 1180.0
+          },
+          {
+            "group": "machinery",
+            "description": "Water tanker 6 KL",
+            "unit": "hour",
+            "quantity": 2.0,
+            "rate": 450.0
+          },
+          {
+            "group": "labour",
+            "description": "Mate",
+            "unit": "day",
+            "quantity": 1.2,
+            "rate": 820.0
+          },
+          {
+            "group": "labour",
+            "description": "Beldar",
+            "unit": "day",
+            "quantity": 2.0,
+            "rate": 736.0
+          },
+          {
+            "group": "sundries",
+            "description": "Diesel, barricading, incidental charges",
+            "unit": "lump-sum",
+            "quantity": 1.0,
+            "rate": 720.0
+          }
+        ],
+        "adjustments": [
+          {
+            "label": "GST @18%",
+            "percent": 18.0,
+            "base_stage": "X",
+            "result_stage": "Y"
+          },
+          {
+            "label": "Contractor's profit & overhead @15%",
+            "percent": 15.0,
+            "base_stage": "Y",
+            "result_stage": "Z"
+          },
+          {
+            "label": "Labour cess @1%",
+            "percent": 1.0,
+            "base_stage": "Z"
+          }
+        ],
+        "round_to": 2
+      }
     }
   ],
-  "labour": [
+  "finishes": [
     {
-      "id": "mason",
-      "name": "Mason (Skilled)",
-      "unit": "day",
-      "base_rate": 950.0,
-      "description": "CPWD SOR 2024 Labour Schedule"
-    },
-    {
-      "id": "helper",
-      "name": "Helper (Unskilled)",
-      "unit": "day",
-      "base_rate": 650.0,
-      "description": "CPWD SOR 2024 Labour Schedule"
-    },
-    {
-      "id": "carpenter",
-      "name": "Carpenter",
-      "unit": "day",
-      "base_rate": 1025.0,
-      "description": "CPWD SOR 2024 Labour Schedule"
-    }
-  ],
-  "equipment": [
-    {
-      "id": "concrete_mixer",
-      "name": "Concrete Mixer 0.2/0.14 cum",
-      "unit": "day",
-      "base_rate": 1850.0,
-      "description": "CPWD SOR 2024 Plant & Machinery"
-    },
-    {
-      "id": "vibrator",
-      "name": "Needle Vibrator",
-      "unit": "day",
-      "base_rate": 1120.0,
-      "description": "CPWD SOR 2024 Plant & Machinery"
-    },
-    {
-      "id": "tower_crane",
-      "name": "Tower Crane",
-      "unit": "day",
-      "base_rate": 15600.0,
-      "description": "CPWD SOR 2024 Plant & Machinery"
+      "id": "8.1.1",
+      "name": "Marble work gang saw cut 20 mm thick for wall lining",
+      "unit": "10 sqm",
+      "description": "Raj Nagar plain white marble backing with CM 1:3 and pointing with white cement 1:2 mix including pigment, cramps and curing.",
+      "costing": {
+        "output_quantity": 10.0,
+        "components": [
+          {
+            "group": "materials",
+            "description": "Raj Nagar plain white marble 20 mm",
+            "unit": "sqm",
+            "quantity": 10.5,
+            "rate": 2087.0
+          },
+          {
+            "group": "materials",
+            "description": "Cement mortar 1:3 backing",
+            "unit": "cum",
+            "quantity": 0.95,
+            "rate": 6800.0
+          },
+          {
+            "group": "labour",
+            "description": "Marble fixer",
+            "unit": "day",
+            "quantity": 7.5,
+            "rate": 1080.0
+          },
+          {
+            "group": "labour",
+            "description": "Helper",
+            "unit": "day",
+            "quantity": 7.5,
+            "rate": 720.0
+          },
+          {
+            "group": "machinery",
+            "description": "Hand polishing machine",
+            "unit": "day",
+            "quantity": 1.0,
+            "rate": 1650.0
+          },
+          {
+            "group": "sundries",
+            "description": "Epoxy grout, cramps, cleaning",
+            "unit": "lump-sum",
+            "quantity": 1.0,
+            "rate": 1250.0
+          }
+        ],
+        "adjustments": [
+          {
+            "label": "Wastage on marble @2%",
+            "percent": 2.0,
+            "base_stage": "X",
+            "result_stage": "Y"
+          },
+          {
+            "label": "GST @18%",
+            "percent": 18.0,
+            "base_stage": "Y",
+            "result_stage": "Z"
+          },
+          {
+            "label": "Contractor's profit @10%",
+            "percent": 10.0,
+            "base_stage": "Z",
+            "result_stage": "AA"
+          },
+          {
+            "label": "Labour cess @1%",
+            "percent": 1.0,
+            "base_stage": "AA"
+          }
+        ],
+        "round_to": 2
+      }
     }
   ]
 }
